@@ -16,6 +16,10 @@ vector<int> indeg;
 vector<int> outdeg;
 vector<int> deg;
 
+vector<int> indeg_dup;
+vector<int> outdeg_dup;
+vector<int> deg_dup;
+
 vector<int> vis;
 vector<int> ord;
 
@@ -60,8 +64,8 @@ void dfs2(int u) {
 }
 
 int main(int argc, char* argv[]) {
-    ifstream fin(string(argv[1]) + ".txt");
-    ofstream fout(string(argv[1]) + ".out");
+    ifstream fin("data/" + string(argv[1]) + ".txt");
+    ofstream fout("output/" + string(argv[1]) + ".out");
     fin >> n;
 
     adj = vector<vector<int>>(n);
@@ -70,6 +74,10 @@ int main(int argc, char* argv[]) {
     deg = vector<int>(n, 0);
     indeg = vector<int>(n, 0);
     outdeg = vector<int>(n, 0);
+
+    deg_dup = vector<int>(n, 0);
+    indeg_dup = vector<int>(n, 0);
+    outdeg_dup = vector<int>(n, 0);
 
     vis = vector<int>(n, false);
 
@@ -85,6 +93,9 @@ int main(int argc, char* argv[]) {
     while(fin >> u >> v) {
         edges.insert({u, v});
         uedges.insert({min(u, v), max(u, v)});
+
+        ++indeg_dup[v]; ++outdeg_dup[u];
+        ++deg_dup[u]; ++deg_dup[v];
     }
 
     for(auto [u, v] : edges) {
@@ -124,5 +135,12 @@ int main(int argc, char* argv[]) {
     for(int i = 0; i < n; ++i) fout << indeg[i] << " ";
     fout << endl;
     for(int i = 0; i < n; ++i) fout << outdeg[i] << " ";
+    fout << endl;
+
+    for(int i = 0; i < n; ++i) fout << deg_dup[i] << " ";
+    fout << endl;
+    for(int i = 0; i < n; ++i) fout << indeg_dup[i] << " ";
+    fout << endl;
+    for(int i = 0; i < n; ++i) fout << outdeg_dup[i] << " ";
     fout << endl;
 }
